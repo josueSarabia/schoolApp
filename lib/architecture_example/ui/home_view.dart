@@ -30,16 +30,46 @@ class CourseListView extends StatelessWidget {
                 : Center(
                     child: model.courses == null
                         ? Text('No data')
-                        : Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: <Widget>[
-                              Center(child: Text('${model.courses.length}')),
-                              FlatButton(
-                                  child: Text('get Detail'),
-                                  onPressed: () =>
-                                      getDetail(context, model.courses[0].id))
-                            ],
-                          ))));
+                        :
+                        ListView(
+                          children: model.courses.map((c){
+                          return Card(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ListTile(
+              leading: Icon(Icons.album),
+              title: Text(c.name),
+              subtitle: Text('Profesor: ${c.professor}'),
+            ),
+            ButtonBar(
+              children: <Widget>[
+                FlatButton(
+                  child: const Text('get details'),
+                  onPressed: () {getDetail(context, c.id);},
+                ),
+                
+              ],
+            ),
+          ],
+        ),
+      );
+
+                          }).toList(),
+                        )
+                        // : Column(
+                        //     crossAxisAlignment: CrossAxisAlignment.stretch,
+                        //     children: <Widget>[
+                        //       Center(child: Text('${model.courses.length}')),
+                        //       FlatButton(
+                        //           child: Text('get Detail'),
+                        //           onPressed: () =>
+                        //               getDetail(context, model.courses[0].id))
+                        //     ],
+                        //   )
+                          )
+                          )
+                          );
   }
 
   void getData(BuildContext context, HomeModel model) async {
@@ -53,6 +83,7 @@ class CourseListView extends StatelessWidget {
   }
 
   void getDetail(BuildContext context, int courseId) async {
+    
     Navigator.of(context).push(
       MaterialPageRoute(
           builder: (context) => CourseDetailView(courseId: courseId)),

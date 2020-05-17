@@ -112,4 +112,29 @@ Future<Course> addCourseService(String username, String token) async {
     return Future.error(error);
   }
 }  
+Future<Course> addStudentService(String username, String token,  int idCurso) async {
+  final http.Response response = await http.post(
+    baseUrl + '/' + username + '/students',
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      HttpHeaders.authorizationHeader: "Bearer " + token,
+    },
+    body: jsonEncode(<String, int>{
+        'courseId': idCurso,
+      })
+  );
+  print('token $token');
+  print('${response.statusCode}');
+  print('$response');
+  if (response.statusCode == 200) {
+    // print('${response.body}');
+    return Course.fromJson(json.decode(response.body));
+  } else {
+    //throw Exception('Failed to register user');
+    Map<String, dynamic> body = json.decode(response.body);
+    String error = body['error'];
+    print('error  $error');
+    return Future.error(error);
+  }
+} 
 }
