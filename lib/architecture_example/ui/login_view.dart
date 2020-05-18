@@ -74,9 +74,9 @@ class LoginFormState extends State<LoginForm> {
               // Add TextFormFields and RaisedButton here.
               TextFormField(
                 // The validator receives the text that the user has entered.
-                initialValue: Provider.of<AuthProvider>(context, listen: false)
+                initialValue: Provider.of<AuthProvider>(this.widget.contextLogin, listen: false)
                         .rememberSession
-                    ? Provider.of<AuthProvider>(context, listen: false).email
+                    ? Provider.of<AuthProvider>(this.widget.contextLogin, listen: false).email
                     : '',
                 decoration: const InputDecoration(
                   labelText: 'Email',
