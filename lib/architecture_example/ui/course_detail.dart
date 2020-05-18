@@ -33,13 +33,67 @@ class CourseDetailView extends StatelessWidget {
                     child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-                      Text('Curso:${model.courseDetail.name}'),
-                      Text('Profesor::${model.courseDetail.professor.name}'),
+                      Card(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Container(
+              height: 150,
+              width: 150,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                  image: NetworkImage(('https://akm-img-a-in.tosshub.com/indiatoday/images/story/201811/online-3412473_1920_1.jpeg?tz.RfsTe_UTLHiDqxmpG7PY_nTIBjwF7'),)
+)
+              ),
+            ),
+            ListTile(
+              
+              title: Text('Curso:${model.courseDetail.name}'),
+              subtitle:  Text('Profesor:${model.courseDetail.professor.name}'),
+            ),
+            ButtonBar(
+
+              alignment: MainAxisAlignment.center,
+              children: <Widget>[
+                MaterialButton(
+                  child: const Text('Profesor details'),
+                  onPressed: () {},
+                ),
+                
+              ],
+            ),
+          ],
+        ),
+      ),
+                      
+                     
                       Expanded(child: Container(
                         child:ListView(
-                        children: <Widget>[
-                          Text("hola")
-                        ],
+                        children: model.courseDetail.students.map((p){
+                         return  Card(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ListTile(
+              leading: Icon(Icons.person),
+              title: Text(p.name),
+              subtitle: Text('Correo: ${p.email}'),
+            ),
+            ButtonBar(
+              children: <Widget>[
+                FlatButton(
+                  child: const Text('get details'),
+                  onPressed: () {},
+                ),
+                
+              ],
+            ),
+          ],
+        ),
+      );
+
+                        }).toList(),
 
                       ) ,
                       ))
@@ -54,13 +108,18 @@ class CourseDetailView extends StatelessWidget {
   }
 
   void _onAdd(BuildContext context, CourseDetailModel model) async {
-    // try {
-    //   await model.addCourse();
-    // } catch (err) {
-    //   print('upsss ${err.toString()}');
-    //   await _buildDialog(context, 'Alert', 'Need to login');
-    //   Provider.of<AuthProvider>(context, listen: false).setLogOut();
-    // }
+    try {
+       
+      await model.addStudent(Provider.of<AuthProvider>(context,listen: false).username,
+        Provider.of<AuthProvider>(context,listen: false).token,this. courseId);
+    } catch (err) {
+      
+      print('upsss ${err.toString()}');
+      Provider.of<AuthProvider>(context, listen: false).setLogOut();
+      await _buildDialog(context, 'Alert', 'Need to login');
+      Navigator.of(context).pop();
+      
+    }
   }
     Future<void> _buildDialog(BuildContext context, _title, _message) {
     return showDialog(

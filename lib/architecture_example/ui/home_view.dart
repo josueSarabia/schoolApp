@@ -38,7 +38,7 @@ class CourseListView extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ListTile(
-              leading: Icon(Icons.album),
+              leading: Icon(Icons.book),
               title: Text(c.name),
               subtitle: Text('Profesor: ${c.professor}'),
             ),
@@ -57,16 +57,7 @@ class CourseListView extends StatelessWidget {
 
                           }).toList(),
                         )
-                        // : Column(
-                        //     crossAxisAlignment: CrossAxisAlignment.stretch,
-                        //     children: <Widget>[
-                        //       Center(child: Text('${model.courses.length}')),
-                        //       FlatButton(
-                        //           child: Text('get Detail'),
-                        //           onPressed: () =>
-                        //               getDetail(context, model.courses[0].id))
-                        //     ],
-                        //   )
+                       
                           )
                           )
                           );
