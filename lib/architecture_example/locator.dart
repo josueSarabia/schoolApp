@@ -7,6 +7,7 @@ import 'viewmodels/coursedetailmodel.dart';
 import 'viewmodels/homemodel.dart';
 import 'viewmodels/loginmodel.dart';
 import 'viewmodels/signUpModel.dart';
+import 'viewmodels/personModel.dart';
 
 GetIt locator = GetIt.instance;
 
@@ -17,5 +18,6 @@ void setupLocator() {
   locator.registerFactory(() => LoginModel());
   locator.registerFactory(() => SignUpModel());
   locator.registerFactory(() => HomeModel());
+  locator.registerFactory(() => PersonModel());
   locator.registerFactory(() => CourseDetailModel());
 }

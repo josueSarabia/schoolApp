@@ -1,5 +1,6 @@
 import 'package:f_202010_provider_get_it/architecture_example/base/base_model.dart';
 import 'package:f_202010_provider_get_it/architecture_example/base/base_view.dart';
+import 'package:f_202010_provider_get_it/architecture_example/ui/person_detail.dart';
 import 'package:f_202010_provider_get_it/architecture_example/viewmodels/auth_provider.dart';
 import 'package:f_202010_provider_get_it/architecture_example/viewmodels/coursedetailmodel.dart';
  
@@ -58,7 +59,10 @@ class CourseDetailView extends StatelessWidget {
               children: <Widget>[
                 MaterialButton(
                   child: const Text('Profesor details'),
-                  onPressed: () {},
+                  onPressed: () {
+                    getDetail(context, model.courseDetail.professor.id, 'profesor');
+
+                  },
                 ),
                 
               ],
@@ -84,7 +88,9 @@ class CourseDetailView extends StatelessWidget {
               children: <Widget>[
                 FlatButton(
                   child: const Text('get details'),
-                  onPressed: () {},
+                  onPressed: () {
+                    getDetail(context, p.id, 'student');
+                  },
                 ),
                 
               ],
@@ -105,6 +111,14 @@ class CourseDetailView extends StatelessWidget {
         onPressed: () => _onAdd(context, model),
         tooltip: 'Add task',
         child: new Icon(Icons.add));
+  }
+
+  void getDetail(BuildContext context, int personId, String personType) async {
+    
+    Navigator.of(context).push(
+      MaterialPageRoute(
+          builder: (context) => PersonDetail(personId: personId, personType: personType)),
+    );
   }
 
   void _onAdd(BuildContext context, CourseDetailModel model) async {

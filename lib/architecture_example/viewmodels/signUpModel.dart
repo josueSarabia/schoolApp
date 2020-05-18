@@ -2,8 +2,10 @@ import 'package:f_202010_provider_get_it/architecture_example/base/base_model.da
 import 'package:f_202010_provider_get_it/architecture_example/models/user.dart';
 import 'package:f_202010_provider_get_it/architecture_example/services/api.dart';
 
+import '../locator.dart';
+
 class SignUpModel extends BaseModel {
-  final Api _api = Api();
+  final Api _api = locator<Api>();
   User _user;
   User get user => _user;
   Future<bool> signUp(String email, String password, String username, String name) async {

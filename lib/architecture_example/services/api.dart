@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:f_202010_provider_get_it/architecture_example/models/course.dart';
 import 'package:f_202010_provider_get_it/architecture_example/models/course_detail.dart';
+import 'package:f_202010_provider_get_it/architecture_example/models/person.dart';
 import 'package:f_202010_provider_get_it/architecture_example/models/user.dart';
 import 'package:http/http.dart' as http;
 
@@ -54,6 +55,30 @@ class Api {
     } else {
       Map<String, dynamic> body = json.decode(response.body);
       return Future.error(body['error']);
+    }
+  }
+
+  Future<Person> getPersonDetail(String username, String token, String personTypeUrl) async {
+    Uri uri = Uri.https(
+      "movil-api.herokuapp.com",
+      '$username/' + personTypeUrl, 
+    );
+    final http.Response response = await http.get(
+      uri,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        HttpHeaders.authorizationHeader: "Bearer " + token,
+      },
+    );
+    print('getPerson username $username token $token => ${response.statusCode}');
+        print(response.body);
+    if (response.statusCode == 200) {
+      return Person.fromJson(json.decode(response.body));
+    } else {
+      //Map<String, dynamic> body = json.decode(response.body);
+      //String error = body['error'];
+      //print('error  $error');
+      return Future.error(response.statusCode.toString());
     }
   }
 
