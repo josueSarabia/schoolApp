@@ -1,21 +1,20 @@
 import 'package:f_202010_provider_get_it/architecture_example/base/base_model.dart';
 import 'package:f_202010_provider_get_it/architecture_example/base/base_view.dart';
-import 'package:f_202010_provider_get_it/architecture_example/ui/signUp_view.dart';
 import 'package:f_202010_provider_get_it/architecture_example/viewmodels/auth_provider.dart';
-import 'package:f_202010_provider_get_it/architecture_example/viewmodels/loginmodel.dart';
+import 'package:f_202010_provider_get_it/architecture_example/viewmodels/signUpModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class LoginView extends StatelessWidget {
+class SignUpView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BaseView<LoginModel>(
+    return BaseView<SignUpModel>(
         builder: (context, model, child) => Scaffold(
             body:
                 // Provider.of<User>(context, listen: false).logged == true ?  CourseListView() :
                 model.state == ViewState.Busy
                     ? Center(child: CircularProgressIndicator())
-                    : Center(child: LoginForm(model: model, contextLogin: context,)
+                    : Center(child: SignUpForm(model: model, contextSignUp: context,)
 
                         /*FlatButton(
                       child: Text("Login"),
@@ -49,24 +48,26 @@ class LoginView extends StatelessWidget {
   }
 }
 
-class LoginForm extends StatefulWidget {
-  LoginModel model;
-  BuildContext contextLogin;
-  LoginForm({this.model, this.contextLogin});
+class SignUpForm extends StatefulWidget {
+  SignUpModel model;
+  BuildContext contextSignUp;
+  SignUpForm({this.model, this.contextSignUp});
   @override
-  LoginFormState createState() => LoginFormState();
+  SignUpFormState createState() => SignUpFormState();
 }
 
-class LoginFormState extends State<LoginForm> {
-  String user;
-  String password;
-  bool rememberSession = false;
+class SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
+
+  String password;
+  String username;
+  String name;
+  String email;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Log in'),
+          title: Text('Sign up'),
         ),
         body: Form(
             key: _formKey,
@@ -74,62 +75,73 @@ class LoginFormState extends State<LoginForm> {
               // Add TextFormFields and RaisedButton here.
               TextFormField(
                 // The validator receives the text that the user has entered.
-                initialValue: Provider.of<AuthProvider>(context, listen: false)
-                        .rememberSession
-                    ? Provider.of<AuthProvider>(context, listen: false).email
-                    : '',
                 decoration: const InputDecoration(
-                  labelText: 'Email',
-                  icon: Icon(Icons.email),
+                  icon: Icon(Icons.account_circle),
+                  labelText: 'Name',
                 ),
                 validator: (value) {
-                  this.user = value;
+                  this.name = value;
                   if (value.isEmpty) {
                     return 'Please enter some text';
                   }
-
+                  return null;
+                },
+              ),
+              TextFormField(
+                // The validator receives the text that the user has entered.
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.people),
+                  labelText: 'User name',
+                ),
+                validator: (value) {
+                  this.username = value;
+                  if (value.isEmpty) {
+                    return 'Please enter some text';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                keyboardType: TextInputType.emailAddress,
+                // The validator receives the text that the user has entered.
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.email),
+                  labelText: 'Email',
+                ),
+                validator: (value) {
+                  this.email = value;
+                  if (value.isEmpty) {
+                    return 'Please enter some text';
+                  }
                   return null;
                 },
               ),
               TextFormField(
                 obscureText: true,
                 decoration: const InputDecoration(
-                  labelText: 'Password',
                   icon: Icon(Icons.lock),
+                  labelText: 'Password',
                 ),
                 validator: (value) {
                   this.password = value;
                   if (value.trim().isEmpty) {
                     return 'Password is required';
                   }
-
                   return null;
                 },
-              ),
-              CheckboxListTile(
-                title: Text('Remember me'),
-                value: rememberSession,
-                onChanged: (bool value) {
-                  setState(() {
-                    rememberSession = !rememberSession;
-                  });
-                },
-                //secondary: const Icon(Icons.hourglass_empty),
               ),
               RaisedButton(
                 onPressed: () async {
                   // Validate returns true if the form is valid, otherwise false.
                   if (_formKey.currentState.validate()) {
-                    var loginSuccess =
-                        await this.widget.model.login(this.user, this.password);
-                    if (loginSuccess) {
+                    var signUpSuccess = await this.widget.model.signUp(
+                        this.email, this.password, this.username, this.name);
+                    if (signUpSuccess) {
                       //print('LoginView loginSuccess setting up setLoggedIn ');
-                      Provider.of<AuthProvider>(this.widget.contextLogin, listen: false)
-                          .setLoggedIn(
-                              this.widget.model.user.username,
-                              this.widget.model.user.token,
-                              this.user,
-                              this.rememberSession);
+                      Provider.of<AuthProvider>(this.widget.contextSignUp, listen: false)
+                          .setLoggedIn(this.widget.model.user.username,
+                              this.widget.model.user.token, this.email, false);
+                      Navigator.pop(this.widget.contextSignUp);
                     }
                   }
                 },
@@ -137,10 +149,9 @@ class LoginFormState extends State<LoginForm> {
               ),
               RaisedButton(
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => SignUpView()));
+                  Navigator.pop(context);
                 },
-                child: Text('Sing up'),
+                child: Text('Log in'),
               )
             ])));
   }

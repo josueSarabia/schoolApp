@@ -33,6 +33,31 @@ class Api {
     }
   }
 
+    Future<User> signUp(
+      {String email, String password, String username, String name}) async {
+    final http.Response response = await http.post(
+      'https://movil-api.herokuapp.com/signup',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'email': email,
+        'password': password,
+        'username': username,
+        'name': name
+      }),
+    );
+
+    //print('${response.body}');
+    if (response.statusCode == 200) {
+      return User.fromJson(json.decode(response.body));
+    } else {
+      Map<String, dynamic> body = json.decode(response.body);
+      return Future.error(body['error']);
+    }
+  }
+
+
   Future<List<Course>> getCourses(String username, String token) async {
     Uri uri = Uri.https(
       "movil-api.herokuapp.com",

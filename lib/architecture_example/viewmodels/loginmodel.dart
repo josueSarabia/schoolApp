@@ -9,9 +9,9 @@ class LoginModel extends BaseModel {
       locator<AuthenticationService>();
   User get user => _authenticationService.user;
  
-  Future<bool> login() async {
+  Future<bool> login(String email, String password) async {
     setState(ViewState.Busy);
-    var success = await _authenticationService.login('a@a.com', '123456');
+    var success = await _authenticationService.login(email, password);
     notifyListeners();
     setState(ViewState.Idle);
     return success;
