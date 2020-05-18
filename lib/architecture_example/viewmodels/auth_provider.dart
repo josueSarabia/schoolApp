@@ -11,7 +11,7 @@ class AuthProvider extends ChangeNotifier {
   String _email;
   bool _loggedIn = false;
   bool _userCreated = false;
-  bool _rememberSession = false;
+  bool _rememberSession;
 
   get username => _username;
   get userCreated => _userCreated;
@@ -64,7 +64,7 @@ class AuthProvider extends ChangeNotifier {
     prefs.setBool('my_int_key', _loggedIn);
     prefs.setString('my_token', _token);
     prefs.setString('my_username', _username);
-    prefs.setString('my_email', _username);
+    prefs.setString('my_email', _email);
   }
 }
 
