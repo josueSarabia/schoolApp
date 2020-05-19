@@ -26,18 +26,96 @@ class PersonDetail extends StatelessWidget {
             }),
         builder: (context, model, child) => Scaffold(
             appBar: AppBar(
-              title: Text("Person detail"),
+              title: Text("Information"),
             ),
             body: model.state == ViewState.Busy
                 ? Center(child: CircularProgressIndicator())
                 : Center(
                     child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      Text('Name:${model.personDetail.name}'),
-                      Text('Email::${model.personDetail.email}')
-                    ],
-                  ))));
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                        Card(
+                            child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Container(
+                              height: 150,
+                              width: 150,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                      image: NetworkImage(
+                                    ('https://www.kindpng.com/picc/m/24-248253_user-profile-default-image-png-clipart-png-download.png'),
+                                  ))),
+                            ),
+                            ListTile(
+                              title: Center(
+                                  child: Text(
+                                'Name: ${model.personDetail.name}',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              )),
+                              subtitle: Center(
+                                  child: Text(
+                                      'Email: ${model.personDetail.email}')),
+                            ),
+                          ],
+                        )),
+                        Expanded(
+                          child: Card(
+                              child: Container(
+                                  padding: new EdgeInsets.all(11.0),
+                                  child: Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: <Widget>[
+                                        Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Text('About',
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.grey)),
+                                        ),
+                                        Divider(color: Colors.grey),
+                                        Center(
+                                            child: Container(
+                                                padding: EdgeInsets.all(35.0),
+                                                child: Column(
+                                                  children: <Widget>[
+                                                    
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsets.all(15.0),
+                                                      child:
+                                                          Text('Username: ${model.personDetail.username} '),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsets.all(15.0),
+                                                      child:
+                                                          Text('Phone: ${model.personDetail.phone}'),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsets.all(15.0),
+                                                      child:
+                                                          Text('City: ${model.personDetail.city}'),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsets.all(15.0),
+                                                      child:
+                                                          Text('Country: ${model.personDetail.country}'),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsets.all(15.0),
+                                                      child:
+                                                          Text('Birthday: ${model.personDetail.birthday}'),
+                                                    ),
+                                                  ],
+                                                )))
+                                      ]))),
+                        )
+                      ]))));
   }
 
   Future<void> _buildDialog(BuildContext context, _title, _message) {
