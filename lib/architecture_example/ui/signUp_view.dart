@@ -69,7 +69,8 @@ class SignUpFormState extends State<SignUpForm> {
         appBar: AppBar(
           title: Text('Sign up'),
         ),
-        body: Form(
+        body: SingleChildScrollView(
+          child: Form(
             key: _formKey,
             child: Column(children: <Widget>[
               // Add TextFormFields and RaisedButton here.
@@ -153,6 +154,6 @@ class SignUpFormState extends State<SignUpForm> {
                 },
                 child: Text('Log in'),
               )
-            ])));
+            ]))));
   }
 }

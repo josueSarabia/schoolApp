@@ -68,12 +68,13 @@ class LoginFormState extends State<LoginForm> {
         appBar: AppBar(
           title: Text('Log in'),
         ),
-        body: Form(
+        body: SingleChildScrollView(
+          child: Form(
             key: _formKey,
             child: Column(children: <Widget>[
               // Add TextFormFields and RaisedButton here.
               TextFormField(
-                // The validator receives the text that the user has entered.
+                keyboardType: TextInputType.emailAddress,
                 initialValue: Provider.of<AuthProvider>(this.widget.contextLogin, listen: false)
                         .rememberSession
                     ? Provider.of<AuthProvider>(this.widget.contextLogin, listen: false).email
@@ -142,6 +143,6 @@ class LoginFormState extends State<LoginForm> {
                 },
                 child: Text('Sing up'),
               )
-            ])));
+            ]))));
   }
 }
